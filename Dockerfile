@@ -10,7 +10,6 @@ RUN \
 
 # versions of packages
 ENV \
-    PYVERSION=3.8.8 \
     GDAL_VERSION=3.2.1 \
     PROJ_VERSION=7.2.1 \
     GEOS_VERSION=3.8.1 \
@@ -243,8 +242,11 @@ RUN \
     make; make install; \
     cd ..; rm -rf spatialite
 
-# install newer version of Python to get a newer version of sqlite3 for Django
+# Newer versions of Django (v2.1+) require a newer version of SQLite (3.8.3+)
+# than is currently available on AWS Lambda instances (3.7.17). Install a newer
+# version of Python to get a newer version of SQLite.
 ENV \
+    PYVERSION=3.8.8 \
     PYENV_ROOT=/root/.pyenv \
     PATH=/root/.pyenv/shims:/root/.pyenv/bin:$PATH
 
