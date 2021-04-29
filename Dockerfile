@@ -3,7 +3,7 @@ FROM lambci/lambda:build-python3.8
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget libcurl-devel libpng-devel nasm rsync; \
+    yum install -y wget libcurl-devel nasm rsync; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
