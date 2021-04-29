@@ -1,9 +1,6 @@
 ARG VERSION=2.1.0
 FROM developmentseed/geolambda:${VERSION}
 
-LABEL maintainer="Development Seed <info@developmentseed.org>"
-LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
-
 ARG PYVERSION=3.8.8
 
 # install Python
