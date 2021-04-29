@@ -3,7 +3,7 @@ FROM lambci/lambda:build-python3.8
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget libcurl-devel nasm rsync; \
+    yum install -y wget libcurl-devel libxml2-devel minizip-devel nasm rsync; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
@@ -20,8 +20,11 @@ ENV \
     NGHTTP2_VERSION=1.41.0 \
     OPENJPEG_VERSION=2.4.0 \
     LIBJPEG_TURBO_VERSION=2.0.6 \
+    LIBRTTOPO_VERSION=1.1.0 \
+    LIBTIFF_VERSION=4.0.9 \
     CURL_VERSION=7.73.0 \
     PKGCONFIG_VERSION=0.29.2 \
+    SPATIALITE_VERSION=5.0.1 \
     SZIP_VERSION=2.1.1 \
     WEBP_VERSION=1.1.0 \
     ZSTD_VERSION=1.4.5
@@ -212,6 +215,33 @@ RUN \
         LDFLAGS="-Wl,-rpath,'\$\$ORIGIN'"; \
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf gdal
+
+# freexl (required by SpatiaLite)
+RUN \
+    mkdir freexl; \
+    wget -qO- http://www.gaia-gis.it/gaia-sins/freexl-$FREEXL_VERSION.tar.gz \
+        | tar xvz -C freexl --strip-components=1; cd freexl; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; \
+    cd ..; rm -rf freexl
+
+# librttopo (required by SpatiaLite)
+RUN \
+    mkdir librttopo; \
+    wget -qO- http://www.gaia-gis.it/gaia-sins/librttopo-$LIBRTTOPO_VERSION.tar.gz \
+        | tar xvz -C librttopo --strip-components=1; cd librttopo; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; \
+    cd ..; rm -rf librttopo
+
+# SpatiaLite
+RUN \
+    mkdir spatialite; \
+    wget -qO- https://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-$SPATIALITE_VERSION.tar.gz \
+        | tar xvz -C spatialite --strip-components=1; cd spatialite; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; \
+    cd ..; rm -rf spatialite
 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
