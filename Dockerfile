@@ -3,7 +3,7 @@ FROM lambci/lambda:build-python3.8
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget libcurl-devel libxml2-devel minizip-devel nasm rsync; \
+    yum install -y wget openssl-devel libcurl-devel libxml2-devel minizip-devel nasm rsync; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
@@ -245,10 +245,13 @@ RUN \
 # Newer versions of Django (v2.1+) require a newer version of SQLite (3.8.3+)
 # than is currently available on AWS Lambda instances (3.7.17). Install a newer
 # version of Python to get a newer version of SQLite.
+# TODO: When this code is no longer needed, remove `openssl-devel` from yum packages.
 ENV \
     PYVERSION=3.8.8 \
     PYENV_ROOT=/root/.pyenv \
-    PATH=/root/.pyenv/shims:/root/.pyenv/bin:$PATH
+    PATH=/root/.pyenv/shims:/root/.pyenv/bin:$PATH \
+    CFLAGS=-I/usr/include/openssl \
+    LDFLAGS=-L/usr/lib64
 
 RUN \
     curl https://pyenv.run | bash; \
