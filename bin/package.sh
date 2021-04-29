@@ -3,6 +3,10 @@
 # directory used for deployment
 export DEPLOY_DIR=lambda
 
+# copy find utility for troubleshooting
+mkdir -p $DEPLOY_DIR/bin
+cp -P /usr/bin/find $DEPLOY_DIR/bin/
+
 # copy libs
 mkdir -p $DEPLOY_DIR/lib
 cp -P ${PREFIX}/lib/*.so* $DEPLOY_DIR/lib/
