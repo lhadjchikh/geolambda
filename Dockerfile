@@ -81,15 +81,6 @@ RUN \
     make -j ${NPROC} install; \
     cd ..; rm -rf nghttp2
 
-# curl
-RUN \
-    mkdir curl; \
-    wget -qO- https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz \
-        | tar xvz -C curl --strip-components=1; cd curl; \
-    ./configure --prefix=${PREFIX} --disable-manual --disable-cookies --with-nghttp2=${PREFIX}; \
-    make -j ${NPROC} install; \
-    cd ..; rm -rf curl
-
 # GEOS
 RUN \
     mkdir geos; \
@@ -206,7 +197,7 @@ RUN \
         --with-jpeg=${PREFIX} \
         --with-threads=yes \
         --with-sqlite3=$PREFIX \
-        --with-curl=${PREFIX}/bin/curl-config \
+        --with-curl=/usr/bin/curl-config \
         --without-python \
         --without-libtool \
         --disable-driver-elastic \
