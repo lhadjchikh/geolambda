@@ -3,13 +3,10 @@
 # directory used for deployment
 export DEPLOY_DIR=lambda
 
-# make deployment directory and add lambda handler
-mkdir -p $DEPLOY_DIR/lib
-
 # copy libs
+mkdir -p $DEPLOY_DIR/lib
 cp -P ${PREFIX}/lib/*.so* $DEPLOY_DIR/lib/
 cp -P ${PREFIX}/lib64/libjpeg*.so* $DEPLOY_DIR/lib/
-
 cp -P /usr/lib64/libcurl.so* $DEPLOY_DIR/lib/
 cp -P /usr/lib64/libxml2.so* $DEPLOY_DIR/lib/
 cp -P /usr/lib64/libidn2.so* $DEPLOY_DIR/lib/
