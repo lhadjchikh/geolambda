@@ -26,7 +26,7 @@ ENV \
     SPATIALITE_VERSION=5.0.1 \
     SZIP_VERSION=2.1.1 \
     WEBP_VERSION=1.2.0 \
-    ZSTD_VERSION=1.4.9
+    ZSTD_VERSION=1.4.5
 
 # Paths to things
 ENV \
