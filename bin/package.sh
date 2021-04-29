@@ -17,6 +17,10 @@ mkdir -p $DEPLOY_DIR/share
 rsync -ax $PREFIX/share/gdal $DEPLOY_DIR/share/
 rsync -ax $PREFIX/share/proj $DEPLOY_DIR/share/
 
+# copy sqlite3
+mkdir -p $DEPLOY_DIR/python
+cp /root/.pyenv/versions/$PYVERSION/lib/python3.8/lib-dynload/_sqlite3.cpython-38-x86_64-linux-gnu.so $DEPLOY_DIR/python/
+
 # zip up deploy package
 cd $DEPLOY_DIR
 zip --symlinks -ruq ../lambda-deploy.zip ./
