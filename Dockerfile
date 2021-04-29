@@ -97,6 +97,24 @@ RUN \
     make -j $NPROC install; \
     cd ..; rm -rf geos
 
+# openjpeg
+RUN \
+    mkdir openjpeg; \
+    wget -qO- https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz \
+        | tar xvz -C openjpeg --strip-components=1; cd openjpeg; mkdir build; cd build; \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX; \
+    make -j $NPROC install; \
+    cd ../..; rm -rf openjpeg
+
+# jpeg_turbo (for hdf and GDAL)
+RUN \
+    mkdir jpeg; \
+    wget -qO- https://github.com/libjpeg-turbo/libjpeg-turbo/archive/$LIBJPEG_TURBO_VERSION.tar.gz \
+        | tar xvz -C jpeg --strip-components=1; cd jpeg; \
+    cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$PREFIX .; \
+    make -j $NPROC install; \
+    cd ..; rm -rf jpeg
+
 # szip (for hdf)
 RUN \
     mkdir szip; \
@@ -156,24 +174,6 @@ RUN \
         | tar -xvz -C zstd --strip-components=1; cd zstd; \
     make -j $NPROC install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
     cd ..; rm -rf zstd
-
-# openjpeg
-RUN \
-    mkdir openjpeg; \
-    wget -qO- https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz \
-        | tar xvz -C openjpeg --strip-components=1; cd openjpeg; mkdir build; cd build; \
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX; \
-    make -j $NPROC install; \
-    cd ../..; rm -rf openjpeg
-
-# jpeg_turbo
-RUN \
-    mkdir jpeg; \
-    wget -qO- https://github.com/libjpeg-turbo/libjpeg-turbo/archive/$LIBJPEG_TURBO_VERSION.tar.gz \
-        | tar xvz -C jpeg --strip-components=1; cd jpeg; \
-    cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$PREFIX .; \
-    make -j $NPROC install; \
-    cd ..; rm -rf jpeg
 
 # geotiff
 RUN \
