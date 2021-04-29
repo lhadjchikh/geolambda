@@ -1,4 +1,4 @@
-FROM lambci/lambda:build-provided
+FROM lambci/lambda:build-python3.8
 
 # install system libraries
 RUN \
