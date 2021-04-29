@@ -50,7 +50,7 @@ RUN \
     wget -qO- https://pkg-config.freedesktop.org/releases/pkg-config-$PKGCONFIG_VERSION.tar.gz \
         | tar xvz -C pkg-config --strip-components=1; cd pkg-config; \
     ./configure --prefix=$PREFIX CFLAGS="-O2 -Os"; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf pkg-config
 
 # sqlite3 (required by proj)
@@ -77,16 +77,16 @@ RUN \
     wget -qO- http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz \
         | tar xvz -C proj --strip-components=1; cd proj; \
     SQLITE3_LIBS="=L$PREFIX/lib -lsqlite3" SQLITE3_INCLUDE_DIRS=$PREFIX/include/proj ./configure --prefix=$PREFIX; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf proj
 
 # nghttp2
 RUN \
     mkdir nghttp2; \
-    wget -qO- https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.gz \
+    wget -qO- https://github.com/nghttp2/nghttp2/releases/download/v$NGHTTP2_VERSION/nghttp2-$NGHTTP2_VERSION.tar.gz \
         | tar xvz -C nghttp2 --strip-components=1; cd nghttp2; \
-    ./configure --enable-lib-only --prefix=${PREFIX}; \
-    make -j ${NPROC} install; \
+    ./configure --enable-lib-only --prefix=$PREFIX; \
+    make -j $NPROC install; \
     cd ..; rm -rf nghttp2
 
 # GEOS
@@ -95,7 +95,7 @@ RUN \
     wget -qO- http://download.osgeo.org/geos/geos-$GEOS_VERSION.tar.bz2 \
         | tar xvj -C geos --strip-components=1; cd geos; \
     ./configure --enable-python --prefix=$PREFIX CFLAGS="-O2 -Os"; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf geos
 
 # szip (for hdf)
@@ -104,7 +104,7 @@ RUN \
     wget -qO- https://support.hdfgroup.org/ftp/lib-external/szip/$SZIP_VERSION/src/szip-$SZIP_VERSION.tar.gz \
         | tar xvz -C szip --strip-components=1; cd szip; \
     ./configure --prefix=$PREFIX; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf szip
 
 # libhdf4
@@ -118,18 +118,18 @@ RUN \
         --enable-shared \
         --disable-netcdf \
         --disable-fortran; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf hdf4
 
 # libhdf5
 RUN \
     mkdir hdf5; \
-    wget -qO- https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5_VERSION%.*}/hdf5-${HDF5_VERSION}/src/hdf5-$HDF5_VERSION.tar.gz \
+    wget -qO- https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5_VERSION%.*}/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz \
         | tar xvz -C hdf5 --strip-components=1; cd hdf5; \
     ./configure \
         --prefix=$PREFIX \
         --with-szlib=$PREFIX; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf hdf5
 
 # NetCDF
@@ -138,24 +138,24 @@ RUN \
     wget -qO- https://github.com/Unidata/netcdf-c/archive/v$NETCDF_VERSION.tar.gz \
         | tar xvz -C netcdf --strip-components=1; cd netcdf; \
     ./configure --prefix=$PREFIX --enable-hdf4; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf netcdf
 
 # WEBP
 RUN \
     mkdir webp; \
-    wget -qO- https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${WEBP_VERSION}.tar.gz \
+    wget -qO- https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-$WEBP_VERSION.tar.gz \
         | tar xvz -C webp --strip-components=1; cd webp; \
     CFLAGS="-O2 -Wl,-S" PKG_CONFIG_PATH="/usr/lib64/pkgconfig" ./configure --prefix=$PREFIX; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ..; rm -rf webp
 
 # ZSTD
 RUN \
     mkdir zstd; \
-    wget -qO- https://github.com/facebook/zstd/archive/v${ZSTD_VERSION}.tar.gz \
+    wget -qO- https://github.com/facebook/zstd/archive/v$ZSTD_VERSION.tar.gz \
         | tar -xvz -C zstd --strip-components=1; cd zstd; \
-    make -j ${NPROC} install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
+    make -j $NPROC install PREFIX=$PREFIX ZSTD_LEGACY_SUPPORT=0 CFLAGS=-O1 --silent; \
     cd ..; rm -rf zstd
 
 # openjpeg
@@ -164,16 +164,16 @@ RUN \
     wget -qO- https://github.com/uclouvain/openjpeg/archive/v$OPENJPEG_VERSION.tar.gz \
         | tar xvz -C openjpeg --strip-components=1; cd openjpeg; mkdir build; cd build; \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX; \
-    make -j ${NPROC} install; \
+    make -j $NPROC install; \
     cd ../..; rm -rf openjpeg
 
 # jpeg_turbo
 RUN \
     mkdir jpeg; \
-    wget -qO- https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz \
+    wget -qO- https://github.com/libjpeg-turbo/libjpeg-turbo/archive/$LIBJPEG_TURBO_VERSION.tar.gz \
         | tar xvz -C jpeg --strip-components=1; cd jpeg; \
     cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$PREFIX .; \
-    make -j $(nproc) install; \
+    make -j $NPROC install; \
     cd ..; rm -rf jpeg
 
 # geotiff
@@ -181,10 +181,10 @@ RUN \
     mkdir geotiff; \
     wget -qO- https://download.osgeo.org/geotiff/libgeotiff/libgeotiff-$GEOTIFF_VERSION.tar.gz \
         | tar xvz -C geotiff --strip-components=1; cd geotiff; \
-    ./configure --prefix=${PREFIX} \
-        --with-proj=${PREFIX} --with-jpeg=${PREFIX} --with-zip=yes;\
-    make -j ${NPROC} install; \
-    cd ${BUILD}; rm -rf geotiff
+    ./configure --prefix=$PREFIX \
+        --with-proj=$PREFIX --with-jpeg=$PREFIX --with-zip=yes; \
+    make -j $NPROC install; \
+    cd $BUILD; rm -rf geotiff
 
 # GDAL
 RUN \
@@ -194,15 +194,15 @@ RUN \
     ./configure \
         --disable-debug \
         --disable-static \
-        --prefix=${PREFIX} \
+        --prefix=$PREFIX \
         --with-openjpeg \
-        --with-geotiff=${PREFIX} \
-        --with-hdf4=${PREFIX} \
-        --with-hdf5=${PREFIX} \
-        --with-netcdf=${PREFIX} \
-        --with-webp=${PREFIX} \
-        --with-zstd=${PREFIX} \
-        --with-jpeg=${PREFIX} \
+        --with-geotiff=$PREFIX \
+        --with-hdf4=$PREFIX \
+        --with-hdf5=$PREFIX \
+        --with-netcdf=$PREFIX \
+        --with-webp=$PREFIX \
+        --with-zstd=$PREFIX \
+        --with-jpeg=$PREFIX \
         --with-threads=yes \
         --with-sqlite3=$PREFIX \
         --with-curl=/usr/bin/curl-config \
@@ -213,8 +213,8 @@ RUN \
         --with-hide-internal-symbols=yes \
         CFLAGS="-O2 -Os" CXXFLAGS="-O2 -Os" \
         LDFLAGS="-Wl,-rpath,'\$\$ORIGIN'"; \
-    make -j ${NPROC} install; \
-    cd ${BUILD}; rm -rf gdal
+    make -j $NPROC install; \
+    cd $BUILD; rm -rf gdal
 
 # freexl (required by SpatiaLite)
 RUN \
@@ -251,7 +251,7 @@ ENV \
 RUN \
     curl https://pyenv.run | bash; \
     CONFIGURE_OPTS="--enable-loadable-sqlite-extensions" \
-        pyenv install ${PYVERSION};
+        pyenv install $PYVERSION;
 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
