@@ -3,7 +3,7 @@ FROM lambci/lambda:build-python3.8
 # install system libraries
 RUN \
     yum makecache fast; \
-    yum install -y wget libpng-devel nasm rsync; \
+    yum install -y wget libcurl-devel libpng-devel nasm rsync; \
     yum install -y bash-completion --enablerepo=epel; \
     yum clean all; \
     yum autoremove
@@ -57,6 +57,15 @@ RUN \
     ./configure --prefix=$PREFIX; \
     make; make install; \
     cd ../; rm -rf sqlite3;
+
+# libtiff (required by proj)
+RUN \
+    mkdir libtiff; \
+    wget -qO- https://download.osgeo.org/libtiff/tiff-$LIBTIFF_VERSION.tar.gz \
+        | tar xvz -C libtiff --strip-components=1; cd libtiff; \
+    ./configure --prefix=$PREFIX; \
+    make; make install; \
+    cd ..; rm -rf libtiff;
 
 # proj
 RUN \
