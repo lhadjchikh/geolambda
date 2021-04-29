@@ -1,8 +1,5 @@
 FROM lambci/lambda:build-provided
 
-LABEL maintainer="Development Seed <info@developmentseed.org>"
-LABEL authors="Matthew Hanson  <matt.a.hanson@gmail.com>"
-
 # install system libraries
 RUN \
     yum makecache fast; \
