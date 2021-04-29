@@ -24,8 +24,7 @@ ENV \
     PKGCONFIG_VERSION=0.29.2 \
     SZIP_VERSION=2.1.1 \
     WEBP_VERSION=1.1.0 \
-    ZSTD_VERSION=1.4.5 \
-    OPENSSL_VERSION=1.1.1
+    ZSTD_VERSION=1.4.5
 
 # Paths to things
 ENV \
@@ -204,15 +203,6 @@ RUN \
         LDFLAGS="-Wl,-rpath,'\$\$ORIGIN'"; \
     make -j ${NPROC} install; \
     cd ${BUILD}; rm -rf gdal
-
-# Open SSL is needed for building Python so it's included here for ease
-RUN \
-    mkdir openssl; \
-    wget -qO- https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
-        | tar xvz -C openssl --strip-components=1; cd openssl; \
-    ./config shared --prefix=${PREFIX}/openssl --openssldir=${PREFIX}/openssl; \
-    make depend; make install; cd ..; rm -rf openssl
-
 
 # Copy shell scripts and config files over
 COPY bin/* /usr/local/bin/
