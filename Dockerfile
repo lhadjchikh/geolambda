@@ -51,7 +51,7 @@ RUN \
         | tar xvz -C pkg-config --strip-components=1; cd pkg-config; \
     ./configure --prefix=$PREFIX CFLAGS="-O2 -Os"; \
     make -j ${NPROC} install; \
-    cd ../; rm -rf pkg-config
+    cd ..; rm -rf pkg-config
 
 # sqlite3 (required by proj)
 RUN \
@@ -60,7 +60,7 @@ RUN \
         | tar xvz -C sqlite3 --strip-components=1; cd sqlite3; \
     ./configure --prefix=$PREFIX; \
     make; make install; \
-    cd ../; rm -rf sqlite3;
+    cd ..; rm -rf sqlite3;
 
 # libtiff (required by proj)
 RUN \
