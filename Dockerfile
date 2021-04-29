@@ -52,7 +52,7 @@ RUN \
     make -j $NPROC install; \
     cd ..; rm -rf pkg-config
 
-# sqlite3 (required by proj)
+# sqlite3 (required by PROJ)
 RUN \
     mkdir sqlite3; \
     wget -qO- https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz \
@@ -61,7 +61,7 @@ RUN \
     make; make install; \
     cd ..; rm -rf sqlite3;
 
-# libtiff (required by proj)
+# libtiff (required by PROJ)
 RUN \
     mkdir libtiff; \
     wget -qO- https://download.osgeo.org/libtiff/tiff-$LIBTIFF_VERSION.tar.gz \
@@ -70,7 +70,7 @@ RUN \
     make; make install; \
     cd ..; rm -rf libtiff;
 
-# proj
+# PROJ
 RUN \
     mkdir proj; \
     wget -qO- http://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz \
