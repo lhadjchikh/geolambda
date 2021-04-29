@@ -10,6 +10,17 @@ mkdir -p $DEPLOY_DIR/lib
 cp -P ${PREFIX}/lib/*.so* $DEPLOY_DIR/lib/
 cp -P ${PREFIX}/lib64/libjpeg*.so* $DEPLOY_DIR/lib/
 
+cp -P /usr/lib64/libcurl.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libxml2.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libidn2.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libssh2.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libldap*.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/liblber*.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libunistring.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libsasl2.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libssl3.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libsmime3.so* $DEPLOY_DIR/lib/
+cp -P /usr/lib64/libnss3.so* $DEPLOY_DIR/lib/
 strip $DEPLOY_DIR/lib/* || true
 
 # copy GDAL_DATA files over
